@@ -38,27 +38,26 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     document.querySelector("#data").appendChild(dataElement)
-    
+
     const deleteButton = document.querySelector("#deleteBtn")
-    deleteButton.addEventListener("click",()=>{
+    deleteButton.addEventListener("click", () => {
         deleteRide(rideID)
         window.location.href = "./"
     })
 
-    const map = L.map("mapdetail")
+    const map = L.map("mapdetail", {
+        attributionControl: false
+    })
     map.setView([firstPosition.latitude, firstPosition.longitude], 13)
-    L.tileLayer('https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png', {
-        minZoom: 5,
-        maxZoom: 20,
-               
-    }).addTo(map);
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+    ).addTo(map);
 
-    const positionsArray = ride.data.map((position =>{
+    const positionsArray = ride.data.map((position => {
         return [position.latitude, position.longitude]
     }))
 
-    const polyline = L.polyline(positionsArray, { color: "#F00"})
-    polyline.addto(map)
+    const polyline = L.polyline(positionsArray, { color: "#F00" })
+    polyline.addTo(map)
 
     map.fitBounds(polyline.getBounds())
 })
